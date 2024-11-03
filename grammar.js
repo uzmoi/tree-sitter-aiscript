@@ -11,7 +11,36 @@ module.exports = grammar({
   name: 'aiscript',
 
   rules: {
-    // TODO: add the actual grammar rules
-    source_file: $ => 'hello',
+    source_file: $ => repeat($._toplevel),
+
+    _toplevel: $ => choice($.namespace, $.meta, $._statement),
+
+    namespace: $ => seq(
+      '::',
+      field('name', $.identifier),
+      '{',
+      field('members', repeat(choice($.def_statement, $.namespace))),
+      '}',
+    ),
+
+    meta: $ => seq(
+      '###',
+      field('name', optional($.identifier)),
+      field('value', $._expression),
+    ),
+
+    _statement: $ => choice(
+      $.def_statement,
+    ),
+
+    // TODO: def_statement
+    def_statement: $ => choice('let', 'var', '@'),
+
+    _expression: $ => choice(
+      $.identifier,
+    ),
+
+    // TODO: identifier
+    identifier: _ => '',
   },
 });
