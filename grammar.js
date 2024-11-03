@@ -112,6 +112,7 @@ module.exports = grammar({
 
     _expression: $ => choice(
       $.identifier,
+      $._literal,
     ),
 
     _dest: $ => choice(
@@ -120,5 +121,28 @@ module.exports = grammar({
 
     // TODO: identifier
     identifier: _ => '',
+
+    _literal: $ => choice(
+      $.null_literal,
+      $.bool_literal,
+      $.num_literal,
+      $.str_literal,
+      $.template_literal,
+    ),
+
+    null_literal: _ => 'null',
+
+    bool_literal: _ => choice('true', 'false'),
+
+    // https://github.com/aiscript-dev/aiscript/blob/4ac255988cbe99775925d6d468302407f2c06e58/src/parser/scanner.ts#L415
+    num_literal: _ => /\d+(?:\.\d+)?/,
+
+    str_literal: _ => choice(
+      /"(?:[^"\\]|\\.)*"/,
+      /'(?:[^'\\]|\\.)*'/,
+    ),
+
+    // TODO: template_literal
+    template_literal: _ => '``',
   },
 });
