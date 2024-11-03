@@ -1,0 +1,7 @@
+
+[pre-commit]
+parallel = true
+
+[pre-commit.commands.eslint]
+glob = "grammar.js"
+run = "npm run lint"
