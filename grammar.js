@@ -116,6 +116,7 @@ module.exports = grammar({
     _expression: $ => choice(
       $.identifier,
       $._literal,
+      $.if_expression,
       $.expression_with_parens,
     ),
 
@@ -158,5 +159,14 @@ module.exports = grammar({
 
     // TODO: template_literal
     template_literal: _ => '``',
+
+
+    if_expression: $ => prec.right(seq(
+      'if',
+      field('cond', $._expression),
+      field('then', $._block_or_statement),
+      field('elif', repeat(seq('elif', $._expression, $._block_or_statement))),
+      field('else', optional(seq('else', $._block_or_statement))),
+    )),
   },
 });
