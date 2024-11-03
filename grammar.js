@@ -28,7 +28,7 @@ module.exports = grammar({
     meta: $ => seq(
       '###',
       field('name', optional($.identifier)),
-      field('value', $._expression),
+      field('value', $._static_expression),
     ),
 
 
@@ -47,6 +47,7 @@ module.exports = grammar({
       $.while_statement,
       $.break_statement,
       $.continue_statement,
+      $._expression,
     ),
 
     // TODO: def_statement
@@ -115,6 +116,13 @@ module.exports = grammar({
     _expression: $ => choice(
       $.identifier,
       $._literal,
+    ),
+
+    _static_expression: $ => choice(
+      $.null_literal,
+      $.bool_literal,
+      $.num_literal,
+      $.str_literal,
     ),
 
     _dest: $ => choice(
