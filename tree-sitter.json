@@ -5,7 +5,10 @@
       "camelcase": "AiScript",
       "scope": "source.aiscript",
       "path": ".",
-      "file-types": null,
+      "file-types": [
+        "ais",
+        "is"
+      ],
       "injection-regex": "^aiscript$"
     }
   ],
