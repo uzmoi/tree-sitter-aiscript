@@ -8,10 +8,10 @@
 // @ts-check
 
 module.exports = grammar({
-  name: "aiscript",
+  name: 'aiscript',
 
   rules: {
     // TODO: add the actual grammar rules
-    source_file: $ => "hello"
-  }
+    source_file: $ => 'hello',
+  },
 });
