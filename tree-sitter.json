@@ -1,0 +1,33 @@
+{
+  "grammars": [
+    {
+      "name": "aiscript",
+      "camelcase": "AiScript",
+      "scope": "source.aiscript",
+      "path": ".",
+      "file-types": null,
+      "injection-regex": "^aiscript$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "AiScript grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "uzmoi"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/uzmoi/tree-sitter-aiscript"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}
