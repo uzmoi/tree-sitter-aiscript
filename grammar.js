@@ -10,6 +10,8 @@
 module.exports = grammar({
   name: 'aiscript',
 
+  word: $ => $.identifier,
+
   rules: {
     source_file: $ => repeat($._toplevel),
 
@@ -119,8 +121,9 @@ module.exports = grammar({
       $.identifier,
     ),
 
-    // TODO: identifier
-    identifier: _ => '',
+    // https://github.com/aiscript-dev/aiscript/blob/master/src/parser/scanner.ts#L11
+    identifier: _ => /[A-Za-z_][A-Za-z0-9_]*/,
+
 
     _literal: $ => choice(
       $.null_literal,
