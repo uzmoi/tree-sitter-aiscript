@@ -82,7 +82,7 @@ module.exports = grammar({
       field('body', $._block_or_statement),
     ),
 
-    _for_enumerator: $ => choice(
+    _for_enumerator: $ => prec.left(choice(
       seq(
         'let',
         field('var', $.identifier),
@@ -91,7 +91,7 @@ module.exports = grammar({
         field('to', $._expression),
       ),
       field('times', $._expression),
-    ),
+    )),
 
     loop_statement: $ => seq('loop', $.block),
 
@@ -116,7 +116,10 @@ module.exports = grammar({
     _expression: $ => choice(
       $.identifier,
       $._literal,
+      $.expression_with_parens,
     ),
+
+    expression_with_parens: $ => seq('(', $._expression, ')'),
 
     _static_expression: $ => choice(
       $.null_literal,
