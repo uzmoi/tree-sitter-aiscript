@@ -21,7 +21,7 @@ module.exports = grammar({
       '::',
       field('name', $.identifier),
       '{',
-      field('members', repeat(choice($.def_statement, $.namespace))),
+      field('members', repeat(choice($._def_statement, $.namespace))),
       '}',
     ),
 
@@ -36,8 +36,17 @@ module.exports = grammar({
 
     block: $ => prec(1, seq('{', repeat($._statement), '}')),
 
+    parameters: $ => seq('(', sepBy(',', $.parameter), ')'),
+
+    parameter: $ => seq(
+      field('dest', $._dest),
+      field('optional', optional('?')),
+      field('type', optional(seq(':', $._type))),
+      field('default', optional(seq('=', $._expression))),
+    ),
+
     _statement: $ => choice(
-      $.def_statement,
+      $._def_statement,
       $.out_statement,
       $.return_statement,
       $.each_statement,
@@ -50,8 +59,23 @@ module.exports = grammar({
       $._expression,
     ),
 
-    // TODO: def_statement
-    def_statement: $ => choice('let', 'var', '@'),
+    _def_statement: $ => choice($.var_def_statement, $.fn_def_statement),
+
+    var_def_statement: $ => seq(
+      field('keyword', choice('let', 'var')),
+      field('dest', $._dest),
+      field('type', optional(seq(':', $._type))),
+      '=',
+      field('init', $._expression),
+    ),
+
+    fn_def_statement: $ => seq(
+      '@',
+      field('name', $.identifier),
+      field('params', $.parameters),
+      field('ret_type', optional(seq(':', $._type))),
+      field('body', $.block),
+    ),
 
     out_statement: $ => seq('<:', $._expression),
 
@@ -216,6 +240,14 @@ module.exports = grammar({
       field('value', $._expression),
     ),
 
+    fn_expression: $ => seq(
+      '@',
+      field('params', $.parameters),
+      field('ret_type', optional(seq(':', $._type))),
+      field('body', $.block),
+    ),
+
+
     if_expression: $ => prec.right(seq(
       'if',
       field('cond', $._expression),
@@ -223,6 +255,10 @@ module.exports = grammar({
       field('elif', repeat(seq('elif', $._expression, $._block_or_statement))),
       field('else', optional(seq('else', $._block_or_statement))),
     )),
+
+
+    // TODO: _type
+    _type: $ => $.identifier,
   },
 });
 
