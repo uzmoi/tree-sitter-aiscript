@@ -34,7 +34,7 @@ module.exports = grammar({
 
     _block_or_statement: $ => choice($.block, $._statement),
 
-    block: $ => seq('{', repeat($._statement), '}'),
+    block: $ => prec(1, seq('{', repeat($._statement), '}')),
 
     _statement: $ => choice(
       $.def_statement,
@@ -116,6 +116,8 @@ module.exports = grammar({
     _expression: $ => choice(
       $.identifier,
       $._literal,
+      $.array_expression,
+      $.object_expression,
       $.if_expression,
       $.expression_with_parens,
     ),
@@ -127,10 +129,50 @@ module.exports = grammar({
       $.bool_literal,
       $.num_literal,
       $.str_literal,
+      $.static_array_expression,
+      $.static_object_expression,
+    ),
+
+    static_array_expression: $ => seq(
+      '[',
+      sepBy(',', $._static_expression),
+      ']',
+    ),
+
+    static_object_expression: $ => seq(
+      '{',
+      sepBy(',', $.static_object_key_value),
+      '}',
+    ),
+
+    static_object_key_value: $ => seq(
+      field('key', $.identifier),
+      ':',
+      field('value', $._static_expression),
     ),
 
     _dest: $ => choice(
       $.identifier,
+      $.array_dest,
+      $.object_dest,
+    ),
+
+    array_dest: $ => seq(
+      '[',
+      sepBy(',', $._dest),
+      ']',
+    ),
+
+    object_dest: $ => seq(
+      '{',
+      sepBy(',', $.object_dest_key_value),
+      '}',
+    ),
+
+    object_dest_key_value: $ => seq(
+      field('key', $.identifier),
+      ':',
+      field('value', $._dest),
     ),
 
     // https://github.com/aiscript-dev/aiscript/blob/master/src/parser/scanner.ts#L11
@@ -160,6 +202,19 @@ module.exports = grammar({
     // TODO: template_literal
     template_literal: _ => '``',
 
+    array_expression: $ => seq('[', sepBy(',', $._expression), ']'),
+
+    object_expression: $ => seq(
+      '{',
+      sepBy(',', $.object_key_value),
+      '}',
+    ),
+
+    object_key_value: $ => seq(
+      field('key', $.identifier),
+      ':',
+      field('value', $._expression),
+    ),
 
     if_expression: $ => prec.right(seq(
       'if',
@@ -170,3 +225,17 @@ module.exports = grammar({
     )),
   },
 });
+
+/**
+ * @param {RuleOrLiteral} sep
+ * @param {RuleOrLiteral} rule
+ */
+function sepBy(sep, rule) {
+  return seq(
+    optional(seq(
+      rule,
+      repeat(seq(sep, rule)),
+    )),
+    optional(sep),
+  );
+}
