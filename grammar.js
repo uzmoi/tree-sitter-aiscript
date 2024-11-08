@@ -7,6 +7,20 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+// https://github.com/aiscript-dev/aiscript/blob/master/src/parser/syntaxes/expressions.ts#L22
+const PREC = {
+  call: 20,
+  prop: 18,
+  pow: 17,
+  prefix: 14,
+  mul: 12,
+  add: 10,
+  cmp: 8,
+  eq: 6,
+  and: 4,
+  or: 2,
+};
+
 module.exports = grammar({
   name: 'aiscript',
 
@@ -142,6 +156,7 @@ module.exports = grammar({
       $._literal,
       $.array_expression,
       $.object_expression,
+      $.binary_expression,
       $.if_expression,
       $.expression_with_parens,
     ),
@@ -247,6 +262,24 @@ module.exports = grammar({
       field('body', $.block),
     ),
 
+
+    binary_expression: $ => choice(
+      .../** @type {const} */([
+        [PREC.pow, '^', 'right'],
+        [PREC.mul, choice('*', '/', '%')],
+        [PREC.add, choice('+', '-')],
+        [PREC.cmp, choice('<', '<=', '>', '>=')],
+        [PREC.eq, choice('==', '!=')],
+        [PREC.and, '&&'],
+        [PREC.or, '||'],
+      ]).map(([precedence, operator, associativity = /** @type {const} */('left')]) =>
+        prec[associativity](precedence, seq(
+          field('lhs', $._expression),
+          field('operator', operator),
+          field('rhs', $._expression),
+        )),
+      ),
+    ),
 
     if_expression: $ => prec.right(seq(
       'if',

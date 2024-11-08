@@ -1,0 +1,28 @@
+================================================================
+Binary expression
+================================================================
+
+1 + 2 + 3
+1 + 2 * 3
+1 ^ 2 ^ 3
+
+----------------------------------------------------------------
+
+(source_file
+  (binary_expression
+    lhs: (binary_expression
+      lhs: (num_literal)
+      rhs: (num_literal))
+    rhs: (num_literal))
+    
+  (binary_expression
+    lhs: (num_literal)
+    rhs: (binary_expression
+      lhs: (num_literal)
+      rhs: (num_literal)))
+    
+  (binary_expression
+    lhs: (num_literal)
+    rhs: (binary_expression
+      lhs: (num_literal)
+      rhs: (num_literal))))

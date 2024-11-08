@@ -100,11 +100,16 @@ Out statement
 ================================================================
 
 <: "Hello world!"
+<: 1 + 2
 
 ----------------------------------------------------------------
 
 (source_file
-  (out_statement (str_literal)))
+  (out_statement (str_literal))
+  (out_statement
+    (binary_expression
+      (num_literal)
+      (num_literal))))
 
 ================================================================
 Each statement
