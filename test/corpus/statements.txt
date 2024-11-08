@@ -1,0 +1,226 @@
+================================================================
+Variable declaration
+================================================================
+
+var a = 0
+
+let [b, c] = [2, 3]
+
+let d: num = 4
+
+----------------------------------------------------------------
+
+(source_file
+  (var_def_statement
+    dest: (identifier)
+    init: (num_literal))
+
+  (var_def_statement
+    dest: (array_dest
+      (identifier)
+      (identifier))
+    init: (array_expression
+      (num_literal)
+      (num_literal)))
+
+  (var_def_statement
+    dest: (identifier)
+    type: (identifier)
+    init: (num_literal)))
+
+================================================================
+Function declaration
+================================================================
+
+@noop() {}
+
+@add(a: num, b: num): num {
+  a + b
+}
+
+@optional_params(optional?, with_default = 0) {
+  return null
+}
+
+@typed_optional_params(optional?: num, with_default: num = 0) {
+  return null
+}
+
+----------------------------------------------------------------
+
+(source_file
+  (fn_def_statement
+    name: (identifier)
+    params: (parameters)
+    body: (block))
+
+  (fn_def_statement
+    name: (identifier)
+    params: (parameters
+      (parameter
+        dest: (identifier)
+        type: (identifier))
+      (parameter
+        dest: (identifier)
+        type: (identifier)))
+    ret_type: (identifier)
+    body: (block
+      (binary_expression
+        lhs: (identifier)
+        rhs: (identifier))))
+
+  (fn_def_statement
+    name: (identifier)
+    params: (parameters
+      (parameter
+        dest: (identifier))
+      (parameter
+        dest: (identifier)
+        default: (num_literal)))
+    body: (block
+      (return_statement
+        (null_literal))))
+
+  (fn_def_statement
+    name: (identifier)
+    params: (parameters
+      (parameter
+        dest: (identifier)
+        type: (identifier))
+      (parameter
+        dest: (identifier)
+        type: (identifier)
+        default: (num_literal)))
+    body: (block
+      (return_statement
+        (null_literal)))))
+
+================================================================
+Out statement
+================================================================
+
+<: "Hello world!"
+
+----------------------------------------------------------------
+
+(source_file
+  (out_statement (str_literal)))
+
+================================================================
+Each statement
+================================================================
+
+each (let x, xs) {
+  <: x
+}
+
+each let x, xs <: x
+
+each let [a, b], xs {
+  <: [a, b]
+}
+
+----------------------------------------------------------------
+
+(source_file
+  (each_statement
+    var: (identifier)
+    items: (identifier)
+    body: (block
+      (out_statement (identifier))))
+
+  (each_statement
+    var: (identifier)
+    items: (identifier)
+    body: (out_statement (identifier)))
+
+  (each_statement
+    var: (array_dest
+      (identifier)
+      (identifier))
+    items: (identifier)
+    body: (block
+      (out_statement
+        (array_expression
+          (identifier)
+          (identifier))))))
+
+================================================================
+For statement
+================================================================
+
+for (let i = 0, 10) {}
+
+for let i = 0, 10 {}
+
+for let i, 10 {}
+
+for 10 {}
+
+----------------------------------------------------------------
+
+(source_file
+  (for_statement
+    var: (identifier)
+    from: (num_literal)
+    to: (num_literal)
+    body: (block))
+
+  (for_statement
+    var: (identifier)
+    from: (num_literal)
+    to: (num_literal)
+    body: (block))
+
+  (for_statement
+    var: (identifier)
+    to: (num_literal)
+    body: (block))
+
+  (for_statement
+    times: (num_literal)
+    body: (block)))
+
+================================================================
+Loop statement
+================================================================
+
+loop {
+  break
+}
+
+----------------------------------------------------------------
+
+(source_file
+  (loop_statement
+    (block (break_statement))))
+
+================================================================
+Do-while statement
+================================================================
+
+do {
+  continue
+} while false
+
+----------------------------------------------------------------
+
+(source_file
+  (do_while_statement
+    body: (block (continue_statement))
+    cond: (bool_literal)))
+
+================================================================
+While statement
+================================================================
+
+while true {
+  break
+}
+
+----------------------------------------------------------------
+
+(source_file
+  (while_statement
+    cond: (bool_literal)
+    body: (block (break_statement))))

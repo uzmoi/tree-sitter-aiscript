@@ -1,0 +1,44 @@
+================================================================
+Namespace
+================================================================
+
+:: Ns {
+  let a = 0
+
+  @f() {}
+
+  :: Ns {}
+}
+
+----------------------------------------------------------------
+
+(source_file
+  (namespace
+    name: (identifier)
+    members: (var_def_statement
+      dest: (identifier)
+      init: (num_literal))
+    members: (fn_def_statement
+      name: (identifier)
+      params: (parameters)
+      body: (block))
+    members: (namespace
+      name: (identifier))))
+
+================================================================
+Meta
+================================================================
+
+### {}
+
+### name {}
+
+----------------------------------------------------------------
+
+(source_file
+  (meta
+    value: (static_object_expression))
+
+  (meta
+    name: (identifier)
+    value: (static_object_expression)))
