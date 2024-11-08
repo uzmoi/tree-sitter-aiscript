@@ -24,6 +24,8 @@ const PREC = {
 module.exports = grammar({
   name: 'aiscript',
 
+  extras: $ => [/\s/, $.line_comment, $.block_comment],
+
   word: $ => $.identifier,
 
   rules: {
@@ -324,6 +326,11 @@ module.exports = grammar({
 
     // TODO: _type
     _type: $ => $.identifier,
+
+
+    line_comment: _ => token(seq('//', /[^\n]*/)),
+
+    block_comment: _ => token(seq('/*', /(?:[^*]|\*[^/])+/, '*/')),
   },
 });
 
