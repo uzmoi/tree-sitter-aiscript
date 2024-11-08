@@ -26,3 +26,110 @@ Binary expression
     rhs: (binary_expression
       lhs: (num_literal)
       rhs: (num_literal))))
+
+================================================================
+If expression
+================================================================
+
+if condition {
+  <: "ｽﾞｲ₍₍(ง˘ω˘)ว⁾⁾ｽﾞｲ"
+}
+
+if a == 0 {
+  0
+} elif a > 0 {
+  +1
+} elif a < 0 {
+  -1
+} else {
+  null
+}
+
+----------------------------------------------------------------
+
+(source_file
+  (if_expression
+    cond: (identifier)
+    then: (block
+      (out_statement
+        (str_literal))))
+
+  (if_expression
+    cond: (binary_expression
+      lhs: (identifier)
+      rhs: (num_literal))
+    then: (block
+      (num_literal))
+    elif: (binary_expression
+      lhs: (identifier)
+      rhs: (num_literal))
+    elif: (block
+      (unary_expression
+        (num_literal)))
+    elif: (binary_expression
+      lhs: (identifier)
+      rhs: (num_literal))
+    elif: (block
+      (unary_expression
+        (num_literal)))
+    else: (block
+      (null_literal))))
+
+================================================================
+Eval
+================================================================
+
+eval {}
+
+----------------------------------------------------------------
+
+(source_file (eval_expression (block)))
+
+================================================================
+Exists
+================================================================
+
+exists a
+
+----------------------------------------------------------------
+
+(source_file (exists_expression (identifier)))
+
+================================================================
+Property and index
+================================================================
+
+object.property["index"].property
+
+----------------------------------------------------------------
+
+(source_file
+  (prop_expression
+    target: (index_expression
+      target: (prop_expression
+        target: (identifier)
+        name: (identifier))
+      index: (str_literal))
+    name: (identifier)))
+
+================================================================
+Call
+================================================================
+
+function("(」・ω・)」うー!", "(/・ω・)/にゃー!")
+
+world.execute(me)
+
+----------------------------------------------------------------
+
+(source_file
+  (call_expression
+    callee: (identifier)
+    arguments: (str_literal)
+    arguments: (str_literal))
+
+  (call_expression
+    callee: (prop_expression
+      target: (identifier)
+      name: (identifier))
+    arguments: (identifier)))

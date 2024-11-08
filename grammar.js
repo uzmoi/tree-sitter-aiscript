@@ -156,8 +156,15 @@ module.exports = grammar({
       $._literal,
       $.array_expression,
       $.object_expression,
+      $.fn_expression,
+      $.unary_expression,
       $.binary_expression,
       $.if_expression,
+      $.eval_expression,
+      $.exists_expression,
+      $.prop_expression,
+      $.index_expression,
+      $.call_expression,
       $.expression_with_parens,
     ),
 
@@ -263,6 +270,8 @@ module.exports = grammar({
     ),
 
 
+    unary_expression: $ => seq(choice('-', '+', '!'), $._expression),
+
     binary_expression: $ => choice(
       .../** @type {const} */([
         [PREC.pow, '^', 'right'],
@@ -287,6 +296,29 @@ module.exports = grammar({
       field('then', $._block_or_statement),
       field('elif', repeat(seq('elif', $._expression, $._block_or_statement))),
       field('else', optional(seq('else', $._block_or_statement))),
+    )),
+
+    eval_expression: $ => seq('eval', $.block),
+
+    exists_expression: $ => seq('exists', $._reference),
+
+
+    prop_expression: $ => prec(PREC.prop, seq(
+      field('target', $._expression),
+      '.',
+      field('name', $.identifier),
+    )),
+
+    index_expression: $ => prec(PREC.call, seq(
+      field('target', $._expression),
+      '[',
+      field('index', $._expression),
+      ']',
+    )),
+
+    call_expression: $ => prec(PREC.call, seq(
+      field('callee', $._expression),
+      field('arguments', seq('(', sepBy(',', $._expression), ')')),
     )),
 
 
