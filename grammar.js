@@ -28,6 +28,10 @@ module.exports = grammar({
 
   word: $ => $.identifier,
 
+  precedences: $ => [
+    [$.block, $.object_expression],
+  ],
+
   rules: {
     source_file: $ => repeat($._toplevel),
 
@@ -50,7 +54,7 @@ module.exports = grammar({
 
     _block_or_statement: $ => choice($.block, $._statement),
 
-    block: $ => prec(1, seq('{', repeat($._statement), '}')),
+    block: $ => seq('{', repeat($._statement), '}'),
 
     parameters: $ => seq('(', sepBy(',', $.parameter), ')'),
 
@@ -154,7 +158,7 @@ module.exports = grammar({
 
 
     _expression: $ => choice(
-      $.identifier,
+      $._reference,
       $._literal,
       $.array_expression,
       $.object_expression,
@@ -221,6 +225,15 @@ module.exports = grammar({
       field('key', $.identifier),
       ':',
       field('value', $._dest),
+    ),
+
+    _reference: $ => choice($.reference, $.identifier),
+
+    // NOTE: memberでtoken.immediateを使うと`tree-sitter generate`が落ちる。
+    reference: $ => seq(
+      field('namespace', $._reference),
+      token.immediate(':'),
+      field('member', $.identifier),
     ),
 
     // https://github.com/aiscript-dev/aiscript/blob/master/src/parser/scanner.ts#L11
