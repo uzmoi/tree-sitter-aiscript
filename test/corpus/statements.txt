@@ -229,3 +229,24 @@ while true {
   (while_statement
     cond: (bool_literal)
     body: (block (break_statement))))
+
+================================================================
+Assignment statement
+================================================================
+
+a = 0
+b += 1
+c -= 2
+
+----------------------------------------------------------------
+
+(source_file
+  (assignment_statement
+    lhs: (identifier)
+    rhs: (num_literal))
+  (assignment_statement
+    lhs: (identifier)
+    rhs: (num_literal))
+  (assignment_statement
+    lhs: (identifier)
+    rhs: (num_literal)))

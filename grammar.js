@@ -88,8 +88,15 @@ module.exports = grammar({
       $.while_statement,
       $.break_statement,
       $.continue_statement,
+      $.assignment_statement,
       $._expression,
     ),
+
+    assignment_statement: $ => prec(1, seq(
+      field('lhs', $._expression),
+      field('operator', choice('=', '+=', '-=')),
+      field('rhs', $._expression),
+    )),
 
     _def_statement: $ => choice($.var_def_statement, $.fn_def_statement),
 
