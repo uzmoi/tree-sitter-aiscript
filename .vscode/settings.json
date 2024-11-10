@@ -1,0 +1,17 @@
+{
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/build/**": true,
+    "**/prebuilds/**": true,
+    "**/node_modules/**": true,
+    "**/.build/**": true,
+    "**/_obj/**": true,
+    "**/dist/**": true,
+  },
+  "files.readonlyInclude": {
+    "src/tree_sitter/**": true,
+    "src/*.json": true,
+    "src/parser.c": true,
+    "src/tree_sitter/*": true,
+  }
+}
