@@ -32,6 +32,14 @@ module.exports = grammar({
     [$.block, $.object_expression],
   ],
 
+  supertypes: $ => [
+    $._statement,
+    $._expression,
+    $._literal,
+    $._static_expression,
+    $._type,
+  ],
+
   rules: {
     source_file: $ => repeat($._toplevel),
 
