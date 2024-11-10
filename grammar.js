@@ -24,6 +24,10 @@ const PREC = {
 module.exports = grammar({
   name: 'aiscript',
 
+  externals: $ => [
+    $._template_literal_content,
+  ],
+
   extras: $ => [/\s/, $.line_comment, $.block_comment],
 
   word: $ => $.identifier,
@@ -268,8 +272,16 @@ module.exports = grammar({
       /'(?:[^'\\]|\\.)*'/,
     ),
 
-    // TODO: template_literal
-    template_literal: _ => '``',
+    template_literal: $ => seq(
+      '`',
+      repeat(choice(
+        $._template_literal_content,
+        $.template_substitution,
+      )),
+      token.immediate('`'),
+    ),
+
+    template_substitution: $ => seq(token.immediate('{'), $._expression, '}'),
 
     array_expression: $ => seq('[', sepBy(',', $._expression), ']'),
 

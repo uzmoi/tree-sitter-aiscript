@@ -58,8 +58,24 @@ Template literals
 ================================================================
 
 ``
+`foo`
+`Hello {name}!`
+`{ `{{ hoge: 0 }}` }`
+`\{\`\\`
 
 ----------------------------------------------------------------
 
 (source_file
+  (template_literal)
+  (template_literal)
+  (template_literal
+    (template_substitution (identifier)))
+  (template_literal
+    (template_substitution
+      (template_literal
+        (template_substitution
+          (object_expression
+            (object_key_value
+              (identifier)
+              (num_literal)))))))
   (template_literal))
