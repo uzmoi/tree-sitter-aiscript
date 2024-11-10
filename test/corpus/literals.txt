@@ -40,6 +40,8 @@ Num literals
 String literals
 ================================================================
 
+''
+""
 'kawaii'
 "Nyanyanyanyanyanyanya!"
 '\\\''
@@ -48,6 +50,8 @@ String literals
 ----------------------------------------------------------------
 
 (source_file
+  (str_literal)
+  (str_literal)
   (str_literal)
   (str_literal)
   (str_literal)
