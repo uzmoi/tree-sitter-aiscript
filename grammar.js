@@ -52,8 +52,12 @@ module.exports = grammar({
     namespace: $ => seq(
       '::',
       field('name', $.identifier),
+      field('members', $.namespace_body),
+    ),
+
+    namespace_body: $ => seq(
       '{',
-      field('members', repeat(choice($._def_statement, $.namespace))),
+      repeat(choice($._def_statement, $.namespace)),
       '}',
     ),
 
