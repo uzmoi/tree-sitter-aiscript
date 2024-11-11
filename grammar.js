@@ -25,7 +25,7 @@ module.exports = grammar({
   name: 'aiscript',
 
   externals: $ => [
-    $._template_literal_content,
+    $.template_content,
   ],
 
   extras: $ => [/\s/, $.line_comment, $.block_comment],
@@ -286,7 +286,7 @@ module.exports = grammar({
     template_literal: $ => seq(
       '`',
       repeat(choice(
-        $._template_literal_content,
+        $.template_content,
         $.template_substitution,
       )),
       token.immediate('`'),
@@ -364,8 +364,10 @@ module.exports = grammar({
 
     call_expression: $ => prec(PREC.call, seq(
       field('callee', $._expression),
-      field('arguments', seq('(', sepBy(',', $._expression), ')')),
+      field('arguments', $.arguments),
     )),
+
+    arguments: $ => prec(PREC.call, seq('(', sepBy(',', $._expression), ')')),
 
 
     // TODO: _type

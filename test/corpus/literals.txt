@@ -71,9 +71,12 @@ Template literals
 
 (source_file
   (template_literal)
-  (template_literal)
   (template_literal
-    (template_substitution (identifier)))
+    (template_content))
+  (template_literal
+    (template_content)
+    (template_substitution (identifier))
+    (template_content))
   (template_literal
     (template_substitution
       (template_literal
@@ -82,4 +85,5 @@ Template literals
             (object_key_value
               (identifier)
               (num_literal)))))))
-  (template_literal))
+  (template_literal
+    (template_content)))

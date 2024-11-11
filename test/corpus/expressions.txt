@@ -125,11 +125,13 @@ world.execute(me)
 (source_file
   (call_expression
     callee: (identifier)
-    arguments: (str_literal)
-    arguments: (str_literal))
+    arguments: (arguments
+      (str_literal)
+      (str_literal)))
 
   (call_expression
     callee: (prop_expression
       target: (identifier)
       name: (identifier))
-    arguments: (identifier)))
+    arguments: (arguments
+      (identifier))))
