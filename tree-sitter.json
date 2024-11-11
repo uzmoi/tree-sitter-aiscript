@@ -9,6 +9,9 @@
         "ais",
         "is"
       ],
+      "highlights": [
+        "queries/highlights.scm"
+      ],
       "injection-regex": "^aiscript$"
     }
   ],
